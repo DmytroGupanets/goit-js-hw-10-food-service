@@ -18,33 +18,27 @@ themeSwitchRef.addEventListener('change', onSwitchTheme);
 defineUserThemeSettings(defaultUserThemeValue);
 
 function defineUserThemeSettings(value) {
-  if (value === 'light-theme') return;
+  if (value === Theme.LIGHT) return;
 
-  if (value === 'dark-theme') onSwitchToDarkTheme();
+  if (value === Theme.DARK) onSwitchTheme();
 }
 
 function onSwitchTheme() {
   if (document.body.classList.contains('light-theme')) {
-    onSwitchToDarkTheme();
+    onSwitchingTheme('light-theme', Theme.DARK);
     return;
   }
 
   if (document.body.classList.contains('dark-theme')) {
-    onSwitchToLightTheme();
+    onSwitchingTheme('dark-theme', Theme.LIGHT);
     return;
   }
 }
 
-function onSwitchToDarkTheme() {
-  document.body.classList.replace('light-theme', 'dark-theme');
-  themeSwitchRef.checked = true;
-  localStorage.setItem('Theme', JSON.stringify(Theme.DARK));
-}
-
-function onSwitchToLightTheme() {
-  document.body.classList.replace('dark-theme', 'light-theme');
-  themeSwitchRef.checked = false;
-  localStorage.setItem('Theme', JSON.stringify(Theme.LIGHT));
+function onSwitchingTheme(presentTheme, nextTheme) {
+  document.body.classList.replace(presentTheme, nextTheme);
+  localStorage.setItem('Theme', JSON.stringify(nextTheme));
+  themeSwitchRef.checked = presentTheme === Theme.LIGHT;
 }
 
 // =============================================================
